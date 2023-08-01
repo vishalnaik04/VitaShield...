@@ -4,3 +4,7 @@ numpy
 pandas
 gunicorn
 beautifulsoup4
+ipaddress
+requests
+google
+python-whois
