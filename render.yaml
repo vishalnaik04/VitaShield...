@@ -1,0 +1,13 @@
+# render.yaml
+
+services:
+  - name: flask-app
+    env:
+      - key: FLASK_APP
+        value: "app.py"  # Replace "app.py" with the filename of your Flask app
+    buildCommand: pip install -r requirements.txt
+    startCommand: flask run --host 0.0.0.0 --port $PORT
+    healthCheckPath: /  # Replace with the path to your health check endpoint, if any
+    healthCheckTimeout: 5000  # Adjust the timeout according to your app's response time
+    internalPort: 5000
+    # Add other configurations if needed
