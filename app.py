@@ -1,48 +1,37 @@
 from flask import Flask, request, jsonify
-import numpy as np
-import warnings
 import pickle
 from feature import FeatureExtraction
 
-warnings.filterwarnings('ignore')
-
-file = open("mlmodel.pkl", "rb")
-gbc = pickle.load(file)
-file.close()
-
 app = Flask(__name__)
 
-@app.route("/", methods=["POST", "GET"])  # Added GET method to allow access through browser
+# Load the pre-trained model
+with open("mlmodel.pkl", "rb") as file:
+    model = pickle.load(file)
+
+@app.route("/", methods=["POST"])
 def detect_phishing():
-    if request.method == "POST" and request.is_json:
-        try:
-            data = request.get_json()
-            url = data.get('url')
-            if url is not None:
-                obj = FeatureExtraction(url)
-                x = np.array(obj.getFeaturesList()).reshape(1, 30)
+    data = request.get_json()
+    url = data.get('url')
 
-                # Check if gbc is a GradientBoostingClassifier
-                if hasattr(gbc, 'predict') and hasattr(gbc, 'predict_proba'):
-                    y_pred = int(gbc.predict(x)[0])  # Convert the prediction to a standard Python integer
-                    y_pro_phishing = float(gbc.predict_proba(x)[0, 0])  # Convert the probability to a float
-                    y_pro_non_phishing = float(gbc.predict_proba(x)[0, 1])  # Convert the probability to a float
+    if url is not None:
+        obj = FeatureExtraction(url)
+        x = obj.getFeaturesList()
 
-                    result = {
-                        'url': url,
-                        'prediction': y_pred,
-                        'safe_probability': y_pro_phishing,
-                        'unsafe_probability': y_pro_non_phishing
-                    }
-                    return jsonify(result)
-                else:
-                    return jsonify({'error': 'Invalid model. Expected a GradientBoostingClassifier model'}), 500
-            else:
-                return jsonify({'error': 'URL not provided in the request body'}), 400
-        except Exception as e:
-            return jsonify({'error': str(e)}), 500
+        # Make predictions using the pre-trained model
+        prediction = model.predict([x])[0]
+        probabilities = model.predict_proba([x])[0]
+        safe_probability = probabilities[0]
+        unsafe_probability = probabilities[1]
+
+        result = {
+            'url': url,
+            'prediction': int(prediction),
+            'safe_probability': float(safe_probability),
+            'unsafe_probability': float(unsafe_probability)
+        }
+        return jsonify(result)
     else:
-        return jsonify({'message': 'Welcome to the Phishing Detection API'}), 200
+        return jsonify({'error': 'URL not provided in the request body'}), 400
 
 if __name__ == "__main__":
-    app.run(debug=False, host='0.0.0.0', port=2002)  # Listen on all available network interfaces
+    app.run(debug=False, host='0.0.0.0', port=2002)
