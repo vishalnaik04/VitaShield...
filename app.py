@@ -6,13 +6,9 @@ from feature import FeatureExtraction
 
 warnings.filterwarnings('ignore')
 
-try:
-    file = open("modeless.pkl", "rb")
-    gbc = pickle.load(file)
-    file.close()
-    print("Model Loaded Successfully")
-except Exception as e:
-    print("Error Loading Model:", str(e))
+file = open("modeless.pkl", "rb")
+gbc = pickle.load(file)
+file.close()
 
 app = Flask(__name__)
 
