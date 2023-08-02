@@ -5,7 +5,7 @@ import pickle
 from feature import FeatureExtraction
 warnings.filterwarnings('ignore')
 
-file = open("modelexx.pkl", "rb")
+file = open("mlmodel.pkl", "rb")
 gbc = pickle.load(file)
 file.close()
 
