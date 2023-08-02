@@ -49,4 +49,4 @@ def detect_phishing():
 
 if __name__ == "__main__":
     # Run the app, listening on all available network interfaces (0.0.0.0) on port 2002
-    app.run(host='0.0.0.0', port=2002)
+    app.run(debug=True, host='0.0.0.0', port=2002)
