@@ -1,4 +1,3 @@
-# Import the necessary libraries
 from flask import Flask, request, jsonify
 import numpy as np
 import warnings
@@ -7,17 +6,15 @@ from feature import FeatureExtraction
 
 warnings.filterwarnings('ignore')
 
-# Load the model from the pickle file
 file = open("mlmodel.pkl", "rb")
 gbc = pickle.load(file)
 file.close()
 
-# Create the Flask app
 app = Flask(__name__)
 
-@app.route("/", methods=["POST"])
+@app.route("/", methods=["POST", "GET"])  # Added GET method to allow access through browser
 def detect_phishing():
-    if request.is_json:
+    if request.method == "POST" and request.is_json:
         try:
             data = request.get_json()
             url = data.get('url')
@@ -45,8 +42,7 @@ def detect_phishing():
         except Exception as e:
             return jsonify({'error': str(e)}), 500
     else:
-        return jsonify({'error': 'Invalid Content-Type. Expected application/json'}), 415
+        return jsonify({'message': 'Welcome to the Phishing Detection API'}), 200
 
 if __name__ == "__main__":
-    # Run the app, listening on all available network interfaces (0.0.0.0) on port 2002
-    app.run(debug=True, host='0.0.0.0', port=2002)
+    app.run(debug=True, host='0.0.0.0', port=2002)  # Listen on all available network interfaces
