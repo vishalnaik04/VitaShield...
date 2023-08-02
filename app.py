@@ -21,7 +21,7 @@ def detect_phishing():
                 obj = FeatureExtraction(url)
                 x = np.array(obj.getFeaturesList()).reshape(1, 30)
 
-                print("Model Attributes:", dir(gbc))  # Debug statement to print model attributes
+                #print("Model Attributes:", dir(gbc))  # Debug statement to print model attributes
 
                 # Check if gbc is a GradientBoostingClassifier
                 if hasattr(gbc, 'predict') and hasattr(gbc, 'predict_proba'):
