@@ -34,4 +34,4 @@ def detect_phishing():
         return jsonify({'error': 'URL not provided in the request body'}), 400
 
 if __name__ == "__main__":
-    app.run(debug=False, host='0.0.0.0', port=2002)
+    app.run(debug=False, host='0.0.0.0', port=6983)
