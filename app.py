@@ -3,7 +3,6 @@ import numpy as np
 import warnings
 import pickle
 from feature import FeatureExtraction
-
 warnings.filterwarnings('ignore')
 
 file = open("modeless.pkl", "rb")
