@@ -45,4 +45,4 @@ def detect_phishing():
         return jsonify({'message': 'Welcome to the Phishing Detection API'}), 200
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=2002)  # Listen on all available network interfaces
+    app.run(debug=False, host='0.0.0.0', port=2002)  # Listen on all available network interfaces
