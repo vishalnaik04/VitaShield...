@@ -1,14 +1,18 @@
+# Import the necessary libraries
 from flask import Flask, request, jsonify
 import numpy as np
 import warnings
 import pickle
 from feature import FeatureExtraction
+
 warnings.filterwarnings('ignore')
 
+# Load the model from the pickle file
 file = open("mlmodel.pkl", "rb")
 gbc = pickle.load(file)
 file.close()
 
+# Create the Flask app
 app = Flask(__name__)
 
 @app.route("/", methods=["POST"])
@@ -20,8 +24,6 @@ def detect_phishing():
             if url is not None:
                 obj = FeatureExtraction(url)
                 x = np.array(obj.getFeaturesList()).reshape(1, 30)
-
-                #print("Model Attributes:", dir(gbc))  # Debug statement to print model attributes
 
                 # Check if gbc is a GradientBoostingClassifier
                 if hasattr(gbc, 'predict') and hasattr(gbc, 'predict_proba'):
@@ -46,4 +48,5 @@ def detect_phishing():
         return jsonify({'error': 'Invalid Content-Type. Expected application/json'}), 415
 
 if __name__ == "__main__":
-    app.run(debug=True, port=2002)
+    # Run the app, listening on all available network interfaces (0.0.0.0) on port 2002
+    app.run(host='0.0.0.0', port=2002)
