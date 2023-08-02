@@ -6,9 +6,13 @@ from feature import FeatureExtraction
 
 warnings.filterwarnings('ignore')
 
-file = open("modeless.pkl", "rb")
-gbc = pickle.load(file)
-file.close()
+try:
+    file = open("modeless.pkl", "rb")
+    gbc = pickle.load(file)
+    file.close()
+    print("Model Loaded Successfully")
+except Exception as e:
+    print("Error Loading Model:", str(e))
 
 app = Flask(__name__)
 
@@ -45,8 +49,6 @@ def detect_phishing():
             return jsonify({'error': str(e)}), 500
     else:
         return jsonify({'error': 'Invalid Content-Type. Expected application/json'}), 415
-
-
 
 if __name__ == "__main__":
     app.run(debug=True, port=2002)
