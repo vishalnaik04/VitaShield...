@@ -6,7 +6,7 @@ from feature import FeatureExtraction
 
 warnings.filterwarnings('ignore')
 
-file = open("model.pkl", "rb")
+file = open("modeless.pkl", "rb")
 gbc = pickle.load(file)
 file.close()
 
