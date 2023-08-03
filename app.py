@@ -7,14 +7,10 @@ app = Flask(__name__)
 # Load the pre-trained model
 with open("mlmodel.pkl", "rb") as file:
     model = pickle.load(file)
-@app.route("/")
-def home():
-    return "hello world"
 
-@app.route("/predict", methods=['POST'])
-def predicts():
-    data = request.get_json()
-    url = data.get('url')
+@app.route("/", methods=["POST"])
+def detect_phishing():
+    url = request.form.get('url')
 
     if url is not None:
         obj = FeatureExtraction(url)
