@@ -10,7 +10,8 @@ with open("mlmodel.pkl", "rb") as file:
 
 @app.route("/", methods=["POST"])
 def detect_phishing():
-    url = request.form.get('url')
+    data = request.form.get('url')
+    url = data
 
     if url is not None:
         obj = FeatureExtraction(url)
