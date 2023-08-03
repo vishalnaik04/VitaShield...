@@ -7,9 +7,12 @@ app = Flask(__name__)
 # Load the pre-trained model
 with open("mlmodel.pkl", "rb") as file:
     model = pickle.load(file)
+@app.route("/")
+def home():
+    return "hello world"
 
-@app.route("/", methods=["POST"])
-def detect_phishing():
+@app.route("/predict", methods=["POST"])
+def predict():
     data = request.get_json()
     url = data.get('url')
 
@@ -34,4 +37,4 @@ def detect_phishing():
         return jsonify({'error': 'URL not provided in the request body'}), 400
 
 if __name__ == "__main__":
-    app.run(debug=False, host='0.0.0.0', port=6983)
+    app.run(debug=True)
