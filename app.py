@@ -11,8 +11,8 @@ with open("mlmodel.pkl", "rb") as file:
 def home():
     return "hello world"
 
-@app.route("/predict", methods=["POST"])
-def predict():
+@app.route("/predict", methods=['POST'])
+def predicts():
     data = request.get_json()
     url = data.get('url')
 
